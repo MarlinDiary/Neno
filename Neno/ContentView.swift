@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @Environment(\.colorScheme) var colorScheme
     @State private var texts: [String] = ["","","","",""]
+    @State private var lastSyncDate: Date?
     var strokeColors = ["#817B7B","#807D79","#787D7F", "#72746D", "#7E7C82"]
     var screenColors = ["#C4ADB5","#C0B0A8","#A2B5B8", "#B1B39D", "#B1B0C0"]
     var darkscreenColors = ["#3C262E","#472E22","#13272A","#23250F","#252534"]
@@ -54,10 +55,8 @@ struct ContentView: View {
                                         .opacity(0)
                                         .onChange(of: geometry.frame(in: .global).minX) { oldValue, newValue in
                                             print(newValue)
-                                            if newValue == UIScreen.main.bounds.width {
-                                                focusedField = id-1
-                                            } else if newValue == -UIScreen.main.bounds.width {
-                                                focusedField = id + 1
+                                            if newValue == 0 {
+                                                focusedField = pageID
                                             }
                                         }
                                 }
@@ -70,9 +69,12 @@ struct ContentView: View {
                     UIPageControl.appearance().isHidden = true
                     focusedField = pageID
                     loadTexts()
+                    startObservingiCloudChanges()
                 }
                 .onChange(of: texts) { oldValue, newValue in
                     saveTexts()
+                    lastSyncDate = Date()
+                    saveSyncDate()
                 }
                 .onChange(of: pageID, { oldValue, newValue in
                     //focusedField = pageID
@@ -83,15 +85,38 @@ struct ContentView: View {
     }
     
     func saveTexts() {
+        let store = NSUbiquitousKeyValueStore.default
         for (index, text) in texts.enumerated() {
-            UserDefaults.standard.set(text, forKey: "Text\(index)")
+            store.set(text, forKey: "Text\(index)")
         }
+        store.synchronize()
     }
     
     func loadTexts() {
+        let store = NSUbiquitousKeyValueStore.default
         for index in 0..<texts.count {
-            texts[index] = UserDefaults.standard.string(forKey: "Text\(index)") ?? ""
+            texts[index] = store.string(forKey: "Text\(index)") ?? ""
         }
+        lastSyncDate = store.object(forKey: "LastSyncDate") as? Date
+    }
+    
+    func saveSyncDate() {
+        let store = NSUbiquitousKeyValueStore.default
+        store.set(Date(), forKey: "LastSyncDate")
+        store.synchronize()
+    }
+    
+    func startObservingiCloudChanges() {
+        NotificationCenter.default.addObserver(forName: NSUbiquitousKeyValueStore.didChangeExternallyNotification, object: NSUbiquitousKeyValueStore.default, queue: .main) { _ in
+            self.loadTexts()
+        }
+    }
+    
+    func formattedDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
+        formatter.timeStyle = .short
+        return formatter.string(from: date)
     }
 }
 

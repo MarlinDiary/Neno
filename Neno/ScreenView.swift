@@ -18,12 +18,6 @@ struct ScreenView: View {
     var darkscreenColor: String = "#3C262E"
     var cornerRadius: CGFloat = 10
     var body: some View {
-        TextViewWrapper(text: $text)
-            .focused($focusedField, equals: thisPageID)
-            .opacity(0.33)
-            .tint(colorScheme == .light ? .black.opacity(0.4): .white.opacity(0.7))
-            .padding(20)
-            .background {
                  ZStack {
                      if colorScheme == .light {
                          RoundedRectangle(cornerRadius: cornerRadius + 13, style: .continuous)
@@ -43,9 +37,9 @@ struct ScreenView: View {
                          RoundedRectangle(cornerRadius: cornerRadius + 4, style: .continuous)
                              .fill(Color(hex: strokeColor).opacity(0.8))
                              .padding(9)
-                         RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+                         RoundedRectangle(cornerRadius: cornerRadius + 1, style: .continuous)
                              .fill(Color(hex: screenColor).opacity(1).gradient.shadow(.inner(color: .gray.opacity(0.5), radius: 30, x: 0, y: 0)))
-                             .padding(13)
+                             .padding(12)
                          GeometryReader { geometry in
                              let rectangleHeight: CGFloat = 3.5
                              let numberOfRectangles = Int(geometry.size.height / rectangleHeight)
@@ -98,7 +92,13 @@ struct ScreenView: View {
                             .padding(.trailing, 9)
                             .padding(.bottom, 11))
                      }
-                 }
+                     
+                     TextViewWrapper(text: $text)
+                         .focused($focusedField, equals: thisPageID)
+                         .opacity(0.6)
+                         .tint(colorScheme == .light ? .black.opacity(0.7): .white.opacity(0.7))
+                         .padding(.horizontal, 15)
+                         .padding(.vertical, 12)
                 
             }
             .padding(.horizontal)
