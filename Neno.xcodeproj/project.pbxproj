@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		84A950A32C273B9400E1C93D /* SettingButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A950A22C273B9400E1C93D /* SettingButtonView.swift */; };
 		84BE375C2C2592A8005A16E4 /* NenoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE375B2C2592A8005A16E4 /* NenoApp.swift */; };
 		84BE375E2C2592A8005A16E4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE375D2C2592A8005A16E4 /* ContentView.swift */; };
 		84BE37602C2592A9005A16E4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84BE375F2C2592A9005A16E4 /* Assets.xcassets */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		84A950A22C273B9400E1C93D /* SettingButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingButtonView.swift; sourceTree = "<group>"; };
 		84BE37582C2592A8005A16E4 /* Neno.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Neno.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84BE375B2C2592A8005A16E4 /* NenoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NenoApp.swift; sourceTree = "<group>"; };
 		84BE375D2C2592A8005A16E4 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -73,6 +75,7 @@
 				84BE376D2C2593BE005A16E4 /* RightAngledTrapezoid.swift */,
 				84BE376F2C2593E1005A16E4 /* ScreenView.swift */,
 				84BE37712C259403005A16E4 /* ButtonView.swift */,
+				84A950A22C273B9400E1C93D /* SettingButtonView.swift */,
 				84BE375F2C2592A9005A16E4 /* Assets.xcassets */,
 				84BE37612C2592A9005A16E4 /* Preview Content */,
 			);
@@ -163,6 +166,7 @@
 			files = (
 				84BE37702C2593E1005A16E4 /* ScreenView.swift in Sources */,
 				84BE375E2C2592A8005A16E4 /* ContentView.swift in Sources */,
+				84A950A32C273B9400E1C93D /* SettingButtonView.swift in Sources */,
 				84BE376E2C2593BE005A16E4 /* RightAngledTrapezoid.swift in Sources */,
 				84BE376C2C259396005A16E4 /* TextViewWrapper.swift in Sources */,
 				84BE375C2C2592A8005A16E4 /* NenoApp.swift in Sources */,

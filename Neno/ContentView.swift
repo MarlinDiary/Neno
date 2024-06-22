@@ -18,70 +18,89 @@ struct ContentView: View {
     var untappedColors = [Color(hex: "#C4ADB5"),Color(hex: "#C0B0A8"),Color(hex: "#A2B5B8"),Color(hex: "#B1B39D"),Color(hex: "#AAA8C8")]
     @AppStorage("Page") var pageID: Int = 0
     @FocusState private var focusedField: Int?
+    @State private var showBlur = false
     
     var body: some View {
         ZStack {
-            Color(hex: colorScheme == .light ? "#D1D3D9": "#1D1E1F")
-                .ignoresSafeArea()
-                .overlay(alignment: .top) {
-                    ZStack(alignment: .topLeading){
-                        Color(hex: colorScheme == .light ? "#CFD3D9": "#323333")
-                            .ignoresSafeArea(edges: .top)
-                        Image("NoiseGradient")
-                            .resizable()
-                            .scaledToFit()
-                            .opacity(0.4)
-                            .ignoresSafeArea()
+            ZStack {
+                Color(hex: colorScheme == .light ? "#D1D3D9": "#1D1E1F")
+                    .ignoresSafeArea()
+                    .overlay(alignment: .top) {
+                        ZStack(alignment: .topLeading){
+                            Color(hex: colorScheme == .light ? "#CFD3D9": "#323333")
+                                .ignoresSafeArea(edges: .top)
+                            Image("NoiseGradient")
+                                .resizable()
+                                .scaledToFit()
+                                .opacity(0.4)
+                                .ignoresSafeArea()
+                        }
                     }
-                }
-            VStack(spacing: 0){
-                HStack {
-                    ForEach(0..<5) {id in
-                        Spacer()
-                        ButtonView(text: $texts[id], focusedField: $focusedField, pageID: $pageID, radius: 10, untappedColor: tappedColors[id], tappedColor: untappedColors[id], thisPageID: id)
-                        Spacer()
-                    }
-                }
-                .padding(.horizontal)
-                .padding(.horizontal)
-                .padding(.bottom)
-                TabView(selection: $pageID) {
-                    ForEach(0..<5) {id in
-                        ScreenView(focusedField: $focusedField, text: $texts[id], pageID: $pageID, thisPageID: id,strokeColor: strokeColors[id],screenColor: screenColors[id], darkscreenColor: darkscreenColors[id])
-                            .overlay {
-                                GeometryReader { geometry in
-                                    Circle()
-                                        .frame(width: 100)
-                                        .opacity(0)
-                                        .onChange(of: geometry.frame(in: .global).minX) { oldValue, newValue in
-                                            print(newValue)
-                                            if newValue == 0 {
-                                                focusedField = pageID
-                                            }
-                                        }
-                                }
+                
+                if showBlur {
+                    LaunchScreenView()
+                                    .edgesIgnoringSafeArea(.all)
                             }
+                
+                VStack(spacing: 0){
+                    HStack {
+                        ForEach(0..<5) {id in
+                            Spacer()
+                            ButtonView(text: $texts[id], focusedField: $focusedField, pageID: $pageID, radius: 10, untappedColor: tappedColors[id], tappedColor: untappedColors[id], thisPageID: id)
+                            Spacer()
+                        }
                     }
+                    .opacity(showBlur ? 0: 1)
+                    .padding(.horizontal)
+                    .padding(.horizontal)
+                    .padding(.bottom)
+                    TabView(selection: $pageID) {
+                        ForEach(0..<5) {id in
+                            ScreenView(focusedField: $focusedField, text: $texts[id], pageID: $pageID, thisPageID: id,strokeColor: strokeColors[id],screenColor: screenColors[id], darkscreenColor: darkscreenColors[id])
+                                .opacity(showBlur ? 0: 1)
+                                .overlay {
+                                    Image("LaunchImage")
+                                        .opacity(showBlur ? 1: 0)
+                                    GeometryReader { geometry in
+                                        Circle()
+                                            .frame(width: 100)
+                                            .opacity(0)
+                                            .onChange(of: geometry.frame(in: .global).minX) { oldValue, newValue in
+                                                print(newValue)
+                                                if newValue == 0 {
+                                                    focusedField = pageID
+                                                }
+                                            }
+                                    }
+                                }
+                        }
+                    }
+                    .tabViewStyle(PageTabViewStyle())
+                    .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .never))
+                    .onAppear {
+                        UIPageControl.appearance().isHidden = true
+                        focusedField = pageID
+                        loadTexts()
+                        startObservingiCloudChanges()
+                    }
+                    .onChange(of: texts) { oldValue, newValue in
+                        saveTexts()
+                        lastSyncDate = Date()
+                        saveSyncDate()
+                    }
+                    .onChange(of: pageID, { oldValue, newValue in
+                        //focusedField = pageID
+                    })
+                    .sensoryFeedback(.increase, trigger: pageID)
                 }
-                .tabViewStyle(PageTabViewStyle())
-                .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .never))
-                .onAppear {
-                    UIPageControl.appearance().isHidden = true
-                    focusedField = pageID
-                    loadTexts()
-                    startObservingiCloudChanges()
-                }
-                .onChange(of: texts) { oldValue, newValue in
-                    saveTexts()
-                    lastSyncDate = Date()
-                    saveSyncDate()
-                }
-                .onChange(of: pageID, { oldValue, newValue in
-                    //focusedField = pageID
-                })
-                .sensoryFeedback(.increase, trigger: pageID)
             }
         }
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.didEnterBackgroundNotification)) { _ in
+                    showBlur = true
+                }
+                .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+                    showBlur = false
+                }
     }
     
     func saveTexts() {
