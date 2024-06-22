@@ -100,6 +100,8 @@
 			dependencies = (
 			);
 			name = Neno;
+			packageProductDependencies = (
+			);
 			productName = Neno;
 			productReference = 84BE37582C2592A8005A16E4 /* Neno.app */;
 			productType = "com.apple.product-type.application";
@@ -128,6 +130,8 @@
 				Base,
 			);
 			mainGroup = 84BE374F2C2592A8005A16E4;
+			packageReferences = (
+			);
 			productRefGroup = 84BE37592C2592A8005A16E4 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";

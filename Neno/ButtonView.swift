@@ -82,7 +82,7 @@ struct CustomButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         if colorScheme == .light {
             configuration.label
-                .shadow(color: Color(hex: "#68727D").opacity(configuration.isPressed ? 0.2: 0.6), radius: 12*radius/75, x: 0, y: 15*radius/75)
+                .shadow(color: Color(hex: "#68727D").opacity(configuration.isPressed ? 0.01: 0.3), radius: 12*radius/75, x: 0, y: 10*radius/75)
         } else {
             configuration.label
                 .shadow(color: .black.opacity(configuration.isPressed ? 0.2: 0.6), radius: 12*radius/75, x: 0, y: 15*radius/75)
