@@ -19,6 +19,8 @@ struct ContentView: View {
     @AppStorage("Page") var pageID: Int = 0
     @FocusState private var focusedField: Int?
     @State private var showBlur = false
+    @State private var settingisOn = false
+    @State private var infoisOn = false
     
     var body: some View {
         ZStack {
@@ -39,24 +41,26 @@ struct ContentView: View {
                 
                 if showBlur {
                     LaunchScreenView()
-                                    .edgesIgnoringSafeArea(.all)
-                            }
+                        .edgesIgnoringSafeArea(.all)
+                }
                 
                 VStack(spacing: 0){
                     HStack {
+                        InfoButtonView(radius: 10, isTapped: $infoisOn)
+                        Spacer()
                         ForEach(0..<5) {id in
-                            Spacer()
+                            
                             ButtonView(text: $texts[id], focusedField: $focusedField, pageID: $pageID, radius: 10, untappedColor: tappedColors[id], tappedColor: untappedColors[id], thisPageID: id)
                             Spacer()
                         }
+                        SettingButtonView(radius: 10, isTapped: $settingisOn)
                     }
                     .opacity(showBlur ? 0: 1)
-                    .padding(.horizontal)
-                    .padding(.horizontal)
+                    .padding(.horizontal, 33)
                     .padding(.bottom)
                     TabView(selection: $pageID) {
                         ForEach(0..<5) {id in
-                            ScreenView(focusedField: $focusedField, text: $texts[id], pageID: $pageID, thisPageID: id,strokeColor: strokeColors[id],screenColor: screenColors[id], darkscreenColor: darkscreenColors[id])
+                            ScreenView(focusedField: $focusedField, text: $texts[id], pageID: $pageID, infoisOn: $infoisOn, thisPageID: id,strokeColor: strokeColors[id],screenColor: screenColors[id], darkscreenColor: darkscreenColors[id])
                                 .opacity(showBlur ? 0: 1)
                                 .overlay {
                                     Image("LaunchImage")
@@ -92,15 +96,20 @@ struct ContentView: View {
                         //focusedField = pageID
                     })
                     .sensoryFeedback(.increase, trigger: pageID)
+                    .sensoryFeedback(.increase, trigger: infoisOn)
+                    .sensoryFeedback(.increase, trigger: settingisOn)
                 }
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.didEnterBackgroundNotification)) { _ in
-                    showBlur = true
-                }
-                .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
-                    showBlur = false
-                }
+            showBlur = true
+        }
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+            showBlur = false
+        }
+        .fullScreenCover(isPresented: $settingisOn, content: {
+            SettingView(settingisOn: $settingisOn)
+        })
     }
     
     func saveTexts() {

@@ -1,5 +1,5 @@
 //
-//  SettingButtonView.swift
+//  InfoButtonView.swift
 //  Neno
 //
 //  Created by Drawix on 2024/6/23.
@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-struct SettingButtonView: View {
+struct InfoButtonView: View {
     @Environment(\.colorScheme) var colorScheme
     var radius: CGFloat = 75
     @Binding var isTapped: Bool
     var body: some View {
         Button {
-            withAnimation(){
+            withAnimation {
                 isTapped.toggle()
             }
         } label: {
@@ -27,9 +27,9 @@ struct SettingButtonView: View {
                         .fill(Color(hex: "#323333").gradient.shadow(.inner(color: Color(hex: "#2E2E2E"), radius: 3*radius/75, x: 0, y: -6*radius/75)).shadow(.inner(color: Color(hex: "#515351"), radius: 3*radius/75, x: 0, y: 6*radius/75)))
                         .frame(width: radius * 2)
                 }
-                Image(systemName: "gear")
+                Image(systemName: "ellipsis")
                     .opacity(0.2)
-                    .rotationEffect(isTapped ? .degrees(270): .zero)
+                    //.rotationEffect(isTapped ? .degrees(360): .zero)
                     .font(.custom("", size: radius*1.1))
                     .allowsHitTesting(false)
             }
@@ -39,5 +39,5 @@ struct SettingButtonView: View {
 }
 
 #Preview {
-    SettingButtonView(isTapped: .constant(false))
+    InfoButtonView(isTapped: .constant(false))
 }

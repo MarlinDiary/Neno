@@ -29,7 +29,7 @@ struct TextViewWrapper: UIViewRepresentable {
     func makeUIView(context: Context) -> UITextView {
         let textView = UITextView()
         textView.delegate = context.coordinator
-        textView.allowsEditingTextAttributes = true // 启用文本属性编辑
+        textView.allowsEditingTextAttributes = false // 启用文本属性编辑
         textView.font = UIFont.systemFont(ofSize: 17)
         textView.showsVerticalScrollIndicator = false
         textView.backgroundColor = .clear
