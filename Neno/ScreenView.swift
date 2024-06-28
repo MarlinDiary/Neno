@@ -6,8 +6,11 @@
 //
 
 import SwiftUI
+import StoreKit
 
 struct ScreenView: View {
+    @AppStorage("confirmDelete") private var confirmDelete = false
+    @State private var showingAlert = false
     @State private var deleteSensorTrigger = false
     @State private var copySensorTrigger = false
     @Environment(\.colorScheme) var colorScheme
@@ -55,10 +58,35 @@ struct ScreenView: View {
             .padding(.vertical, 12)
             
             // Info View
-                infoView
-                .opacity(infoisOn ? 1: 0)
+            GeometryReader { proxy in
+                RoundedRectangle(cornerRadius: colorScheme == .light ? cornerRadius + 1: cornerRadius + 4, style: .continuous)
+                    .fill(.ultraThinMaterial)
+                    .overlay {
+                        ScrollView{
+                            VStack(spacing: 0){
+                                infoView
+                                    .frame(width: proxy.size.width, height: proxy.size.height)
+                                SettingView(infoisOn: $infoisOn, strokeColor: strokeColor, deleteSensorTrigger: $deleteSensorTrigger, copySensorTrigger: $copySensorTrigger)
+                                    .frame(width: proxy.size.width, height: proxy.size.height)
+                                contactView
+                                    .frame(width: proxy.size.width, height: proxy.size.height)
+                            }
+                        }.scrollIndicators(.hidden)
+                        .scrollTargetBehavior(.paging)
+                    }
+            }
+            .padding(.top, colorScheme == .light ? 12: 9)
+            .padding(.leading, colorScheme == .light ? 12: 9)
+            .padding(.trailing, colorScheme == .light ? 12: 9)
+            .padding(.bottom, colorScheme == .light ? 12: 11)
+            .opacity(infoisOn ? 1: 0)
+            .animation(.spring.speed(5), value: infoisOn)
         }
         .padding(.horizontal)
+        .alert("Clear Content", isPresented: $showingAlert) {
+            Button("Cancel", role: .cancel) { }
+            Button("Delete", role: .destructive) {text = ""}
+        }
     }
 
     var lightModeBackground: some View {
@@ -143,8 +171,6 @@ struct ScreenView: View {
 
     var infoView: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: colorScheme == .light ? cornerRadius + 1: cornerRadius + 4, style: .continuous)
-                .fill(.ultraThinMaterial)
             VStack(alignment: .leading) {
                 // Info View
                 HStack {
@@ -199,6 +225,18 @@ struct ScreenView: View {
                     }
                     .buttonStyle(PlainButtonStyle())
                     Spacer()
+                    Button(action: {
+                        UIPasteboard.general.string = text
+                        copySensorTrigger.toggle()
+                        text = ""
+                    }) {
+                        HStack {
+                            Image(systemName: "doc.on.clipboard")
+                            Text("Cut to Clipboard")
+                        }
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    Spacer()
                     ShareLink(item: text) {
                         HStack {
                             Image(systemName: "square.and.arrow.up")
@@ -207,8 +245,13 @@ struct ScreenView: View {
                     }
                     Spacer()
                     Button(action: {
-                        text = ""
-                        deleteSensorTrigger.toggle()
+                        if confirmDelete {
+                            showingAlert.toggle()
+                            deleteSensorTrigger.toggle()
+                        } else {
+                            text = ""
+                            deleteSensorTrigger.toggle()
+                        }
                     }) {
                         HStack {
                             Image(systemName: "trash")
@@ -230,5 +273,137 @@ struct ScreenView: View {
         .padding(.leading, colorScheme == .light ? 12: 9)
         .padding(.trailing, colorScheme == .light ? 12: 9)
         .padding(.bottom, colorScheme == .light ? 12: 11)
+    }
+    
+    var contactView: some View {
+        ZStack {
+            VStack(alignment: .leading) {
+                // Info View
+                HStack {
+                    Text("Others")
+                    Spacer()
+                    Button(action: {
+                        withAnimation {
+                            infoisOn.toggle()
+                        }
+                    }) {
+                        Image(systemName: "xmark.circle.fill")
+                            .rotationEffect(infoisOn ? .zero : .degrees(90))
+                    }
+                }
+                .font(.title2.bold())
+                
+                Spacer()
+                Divider()
+                Spacer()
+                
+                Group {
+                    Button(action: {
+                        copySensorTrigger.toggle()
+                        let email = "developer@huizha.com"
+                        if let url = URL(string: "mailto:\(email)") {
+                            UIApplication.shared.open(url)
+                        }
+                    }) {
+                        HStack {
+                            Image(systemName: "envelope")
+                            Text("Email")
+                        }
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    Spacer()
+                    Button(action: {
+                        copySensorTrigger.toggle()
+                        if let url = URL(string: "https://twitter.com/marlindiary") {
+                            UIApplication.shared.open(url)
+                        }
+                    }) {
+                        HStack {
+                            Image(systemName: "xmark")
+                            Text("Twitter")
+                        }
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    Spacer()
+                    Button(action: {
+                        copySensorTrigger.toggle()
+                        if let url = URL(string: "https://www.instagram.com/deerspost") {
+                            UIApplication.shared.open(url)
+                        }
+                    }) {
+                        HStack {
+                            Image(systemName: "camera")
+                            Text("Instagram")
+                        }
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    Spacer()
+                    Button(action: {
+                        copySensorTrigger.toggle()
+                        if let url = URL(string: "https://m.weibo.cn/u/7873964072?uid=7873964072&t=userinfo&_T_WM=8b0dc5da0300bddb0302ab361a1ba629") {
+                            UIApplication.shared.open(url)
+                        }
+                    }) {
+                        HStack {
+                            Image(systemName: "eye")
+                            Text("Weibo")
+                        }
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                }
+                
+                Spacer()
+                Divider()
+                Spacer()
+                
+                Group {
+                    Button(action: {
+                        copySensorTrigger.toggle()
+                        if let url = URL(string: "https://github.com/MarlinDiary/Neno") {
+                            UIApplication.shared.open(url)
+                        }
+                    }) {
+                        HStack {
+                            Image(systemName: "star")
+                            Text("Star on GitHub")
+                        }
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    Spacer()
+                    Button(action: {
+                        copySensorTrigger.toggle()
+                        if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+                                               SKStoreReviewController.requestReview(in: scene)
+                                           }
+                    }) {
+                        HStack {
+                            Image(systemName: "heart")
+                            Text("Rate Neno")
+                        }
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    Spacer()
+                    Button(action: {
+                        copySensorTrigger.toggle()
+                        // Add action to buy a cup of coffee
+                        // Replace with appropriate link or functionality
+                    }) {
+                        HStack {
+                            Image(systemName: "cup.and.saucer")
+                            Text("Buy Me a Cup of Coffee")
+                        }
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                }
+            }
+            .foregroundStyle(Color(hex: strokeColor))
+            .padding()
+            .sensoryFeedback(.warning, trigger: deleteSensorTrigger)
+            .sensoryFeedback(.success, trigger: copySensorTrigger)
+        }
+        .padding(.top, colorScheme == .light ? 12 : 9)
+        .padding(.leading, colorScheme == .light ? 12 : 9)
+        .padding(.trailing, colorScheme == .light ? 12 : 9)
+        .padding(.bottom, colorScheme == .light ? 12 : 11)
     }
 }

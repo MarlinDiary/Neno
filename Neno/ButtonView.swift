@@ -16,6 +16,7 @@ struct ButtonView: View {
     @Binding var pageID: Int
     var radius: CGFloat = 75
     var untappedColor: Color = Color(hex: "#C4ADB5")
+    var darkuntappedColor: Color = Color(hex: "#C4ADB5")
     var tappedColor: Color = Color(hex: "#D55984")
     var isTapped: Bool {
         thisPageID == pageID
@@ -52,7 +53,7 @@ struct ButtonView: View {
                         .allowsHitTesting(false)
                 } else {
                     Circle()
-                        .fill(isTapped ? Color(hex: "#F8F8F8").gradient.shadow(.inner(color: Color(hex: "#000000").opacity(0.5), radius: 3*radius/75, x: 0, y: 3*radius/75)).shadow(.inner(color: Color(hex: "#FFFFFF"), radius: 3*radius/75, x: 0, y: -2*radius/75)): Color(hex: "#CFD3D9").gradient.shadow(.inner(color: Color(hex: "#000000").opacity(0.5), radius: 3*radius/75, x: 0, y: 3*radius/75)).shadow(.inner(color: Color(hex: "#FFFFFF"), radius: 3*radius/75, x: 0, y: -2*radius/75)))
+                        .fill(isTapped ? Color(hex: "#F8F8F8").gradient.shadow(.inner(color: Color(hex: "#000000").opacity(0.1), radius: 3*radius/75, x: 0, y: 3*radius/75)).shadow(.inner(color: Color(hex: "#FFFFFF"), radius: 3*radius/75, x: 0, y: -2*radius/75)): Color(hex: "#CFD3D9").gradient.shadow(.inner(color: Color(hex: "#000000").opacity(0.5), radius: 3*radius/75, x: 0, y: 3*radius/75)).shadow(.inner(color: Color(hex: "#FFFFFF"), radius: 3*radius/75, x: 0, y: -2*radius/75)))
                         .shadow(color: Color(hex: "#F8F8F8").opacity(isTapped ? 1: 0), radius: 40*radius/75, x: 0, y: 0)
                         .frame(width: radius)
                         .allowsHitTesting(false)
@@ -60,7 +61,7 @@ struct ButtonView: View {
             } else {
                 if hasContent {
                     Circle()
-                        .fill(isTapped ? untappedColor.gradient.shadow(.inner(color: Color(hex: "#000000").opacity(0.5), radius: 3*radius/75, x: 0, y: 3*radius/75)).shadow(.inner(color: Color(hex: "#000000").opacity(0.7), radius: 3*radius/75, x: 0, y: -2*radius/75)): tappedColor.gradient.shadow(.inner(color: Color(hex: "#000000").opacity(0.5), radius: 3*radius/75, x: 0, y: 3*radius/75)).shadow(.inner(color: Color(hex: "#000000"), radius: 3*radius/75, x: 0, y: -2*radius/75)))
+                        .fill(isTapped ? untappedColor.gradient.shadow(.inner(color: Color(hex: "#000000").opacity(0.5), radius: 3*radius/75, x: 0, y: 3*radius/75)).shadow(.inner(color: Color(hex: "#000000").opacity(0.7), radius: 3*radius/75, x: 0, y: -2*radius/75)): darkuntappedColor.gradient.shadow(.inner(color: Color(hex: "#000000").opacity(0.5), radius: 3*radius/75, x: 0, y: 3*radius/75)).shadow(.inner(color: Color(hex: "#000000"), radius: 3*radius/75, x: 0, y: -2*radius/75)))
                         .shadow(color: tappedColor.opacity(isTapped ? 1: 0), radius: 40*radius/75, x: 0, y: 0)
                         .frame(width: radius)
                         .allowsHitTesting(false)

@@ -7,9 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		84A950A32C273B9400E1C93D /* SettingButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A950A22C273B9400E1C93D /* SettingButtonView.swift */; };
 		84A950A52C2805C100E1C93D /* InfoButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A950A42C2805C100E1C93D /* InfoButtonView.swift */; };
-		84A950A72C28380C00E1C93D /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A950A62C28380C00E1C93D /* SettingView.swift */; };
+		84B48B372C2C4FF300DFEB63 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B48B362C2C4FF300DFEB63 /* SettingView.swift */; };
+		84B48B442C2DABE200DFEB63 /* AppIconYellow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84B48B422C2DABE200DFEB63 /* AppIconYellow@2x.png */; };
+		84B48B452C2DABE200DFEB63 /* AppIconYellow@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84B48B432C2DABE200DFEB63 /* AppIconYellow@3x.png */; };
 		84BE375C2C2592A8005A16E4 /* NenoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE375B2C2592A8005A16E4 /* NenoApp.swift */; };
 		84BE375E2C2592A8005A16E4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE375D2C2592A8005A16E4 /* ContentView.swift */; };
 		84BE37602C2592A9005A16E4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84BE375F2C2592A9005A16E4 /* Assets.xcassets */; };
@@ -23,9 +24,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		84A950A22C273B9400E1C93D /* SettingButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingButtonView.swift; sourceTree = "<group>"; };
 		84A950A42C2805C100E1C93D /* InfoButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoButtonView.swift; sourceTree = "<group>"; };
-		84A950A62C28380C00E1C93D /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
+		84B48B362C2C4FF300DFEB63 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
+		84B48B422C2DABE200DFEB63 /* AppIconYellow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppIconYellow@2x.png"; sourceTree = "<group>"; };
+		84B48B432C2DABE200DFEB63 /* AppIconYellow@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppIconYellow@3x.png"; sourceTree = "<group>"; };
 		84BE37582C2592A8005A16E4 /* Neno.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Neno.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84BE375B2C2592A8005A16E4 /* NenoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NenoApp.swift; sourceTree = "<group>"; };
 		84BE375D2C2592A8005A16E4 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -73,15 +75,16 @@
 				84BE37732C25989F005A16E4 /* Neno.entitlements */,
 				84BE375B2C2592A8005A16E4 /* NenoApp.swift */,
 				84BE375D2C2592A8005A16E4 /* ContentView.swift */,
-				84A950A62C28380C00E1C93D /* SettingView.swift */,
 				84BE37792C26B8CC005A16E4 /* LaunchScreenView.swift */,
 				84BE37692C259363005A16E4 /* Color.swift */,
 				84BE376B2C259396005A16E4 /* TextViewWrapper.swift */,
 				84BE376D2C2593BE005A16E4 /* RightAngledTrapezoid.swift */,
 				84BE376F2C2593E1005A16E4 /* ScreenView.swift */,
+				84B48B362C2C4FF300DFEB63 /* SettingView.swift */,
 				84BE37712C259403005A16E4 /* ButtonView.swift */,
-				84A950A22C273B9400E1C93D /* SettingButtonView.swift */,
 				84A950A42C2805C100E1C93D /* InfoButtonView.swift */,
+				84B48B422C2DABE200DFEB63 /* AppIconYellow@2x.png */,
+				84B48B432C2DABE200DFEB63 /* AppIconYellow@3x.png */,
 				84BE375F2C2592A9005A16E4 /* Assets.xcassets */,
 				84BE37612C2592A9005A16E4 /* Preview Content */,
 			);
@@ -158,7 +161,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84B48B442C2DABE200DFEB63 /* AppIconYellow@2x.png in Resources */,
 				84BE37632C2592A9005A16E4 /* Preview Assets.xcassets in Resources */,
+				84B48B452C2DABE200DFEB63 /* AppIconYellow@3x.png in Resources */,
 				84BE37602C2592A9005A16E4 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -171,16 +176,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				84BE37702C2593E1005A16E4 /* ScreenView.swift in Sources */,
+				84B48B372C2C4FF300DFEB63 /* SettingView.swift in Sources */,
 				84BE375E2C2592A8005A16E4 /* ContentView.swift in Sources */,
 				84A950A52C2805C100E1C93D /* InfoButtonView.swift in Sources */,
-				84A950A32C273B9400E1C93D /* SettingButtonView.swift in Sources */,
 				84BE376E2C2593BE005A16E4 /* RightAngledTrapezoid.swift in Sources */,
 				84BE376C2C259396005A16E4 /* TextViewWrapper.swift in Sources */,
 				84BE375C2C2592A8005A16E4 /* NenoApp.swift in Sources */,
 				84BE376A2C259363005A16E4 /* Color.swift in Sources */,
 				84BE37722C259403005A16E4 /* ButtonView.swift in Sources */,
 				84BE377A2C26B8CC005A16E4 /* LaunchScreenView.swift in Sources */,
-				84A950A72C28380C00E1C93D /* SettingView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,7 +344,7 @@
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -378,7 +382,7 @@
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

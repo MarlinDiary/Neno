@@ -28,7 +28,7 @@ struct InfoButtonView: View {
                         .frame(width: radius * 2)
                 }
                 Image(systemName: "ellipsis")
-                    .opacity(0.2)
+                    .opacity(0.4)
                     //.rotationEffect(isTapped ? .degrees(360): .zero)
                     .font(.custom("", size: radius*1.1))
                     .allowsHitTesting(false)

@@ -9,27 +9,28 @@ import SwiftUI
 
 struct ContentView: View {
     @Environment(\.colorScheme) var colorScheme
-    @State private var texts: [String] = ["","","","",""]
+    @State private var texts: [String] = ["", "", "", "", "", "", ""]
     @State private var lastSyncDate: Date?
-    var strokeColors = ["#817B7B","#807D79","#787D7F", "#72746D", "#7E7C82"]
-    var screenColors = ["#C4ADB5","#C0B0A8","#A2B5B8", "#B1B39D", "#B1B0C0"]
-    var darkscreenColors = ["#3C262E","#472E22","#13272A","#23250F","#252534"]
-    var tappedColors = [Color(hex: "#D55984"),Color(hex: "#F47738"),Color(hex: "#AEDAE1"),Color(hex: "#E2EC7C"),Color(hex: "#B44EFF")]
-    var untappedColors = [Color(hex: "#C4ADB5"),Color(hex: "#C0B0A8"),Color(hex: "#A2B5B8"),Color(hex: "#B1B39D"),Color(hex: "#AAA8C8")]
+    @AppStorage("iCloudSync") private var iCloudSync = true // 从 UserDefaults 读取 iCloud 同步状态
+    var strokeColors = ["#817B7B", "#817B7B", "#817B7B", "#817B7B", "#817B7B", "#817B7B", "#817B7B"]
+    var screenColors = ["C4ADAD", "C0B0A8", "C2B598", "AAB39D", "A2B8B5", "96ABB7", "BAB0C0"]
+    var darkscreenColors = ["3C2626", "472E22", "473F22", "2F4722", "13272A", "13192A", "2E2534"]
+    var tappedColors = [Color(hex: "E73737"), Color(hex: "F47738"), Color(hex: "F4B438"), Color(hex: "29EA11"), Color(hex: "78E3E9"), Color(hex: "7AC5FE"), Color(hex: "B44EFF")]
+    var untappedColors = [Color(hex: "C4ADAD"), Color(hex: "C0B0A8"), Color(hex: "C2B598"), Color(hex: "AAB39D"), Color(hex: "A2B8B5"), Color(hex: "96ABB7"), Color(hex: "BAB0C0")]
+    var darkuntappedColors = [Color(hex: "3C2626"), Color(hex: "472E22"), Color(hex: "473F22"), Color(hex: "2F4722"), Color(hex: "13272A"), Color(hex: "13192A"), Color(hex: "2E2534")]
     @AppStorage("Page") var pageID: Int = 0
     @FocusState private var focusedField: Int?
     @State private var showBlur = false
-    @State private var settingisOn = false
     @State private var infoisOn = false
     
     var body: some View {
         ZStack {
             ZStack {
-                Color(hex: colorScheme == .light ? "#D1D3D9": "#1D1E1F")
+                Color(hex: colorScheme == .light ? "#D1D3D9" : "#1D1E1F")
                     .ignoresSafeArea()
                     .overlay(alignment: .top) {
-                        ZStack(alignment: .topLeading){
-                            Color(hex: colorScheme == .light ? "#CFD3D9": "#323333")
+                        ZStack(alignment: .topLeading) {
+                            Color(hex: colorScheme == .light ? "#CFD3D9" : "#323333")
                                 .ignoresSafeArea(edges: .top)
                             Image("NoiseGradient")
                                 .resizable()
@@ -44,27 +45,25 @@ struct ContentView: View {
                         .edgesIgnoringSafeArea(.all)
                 }
                 
-                VStack(spacing: 0){
+                VStack(spacing: 0) {
                     HStack {
-                        InfoButtonView(radius: 10, isTapped: $infoisOn)
-                        Spacer()
-                        ForEach(0..<5) {id in
-                            
-                            ButtonView(text: $texts[id], focusedField: $focusedField, pageID: $pageID, radius: 10, untappedColor: tappedColors[id], tappedColor: untappedColors[id], thisPageID: id)
+                        ForEach(0..<7) { id in
+                            ButtonView(text: $texts[id], focusedField: $focusedField, pageID: $pageID, radius: 10, untappedColor: tappedColors[id], darkuntappedColor: darkuntappedColors[id], tappedColor: untappedColors[id], thisPageID: id)
                             Spacer()
                         }
-                        SettingButtonView(radius: 10, isTapped: $settingisOn)
+                        InfoButtonView(radius: 10, isTapped: $infoisOn)
                     }
-                    .opacity(showBlur ? 0: 1)
+                    .opacity(showBlur ? 0 : 1)
                     .padding(.horizontal, 33)
                     .padding(.bottom)
+                    
                     TabView(selection: $pageID) {
-                        ForEach(0..<5) {id in
-                            ScreenView(focusedField: $focusedField, text: $texts[id], pageID: $pageID, infoisOn: $infoisOn, thisPageID: id,strokeColor: strokeColors[id],screenColor: screenColors[id], darkscreenColor: darkscreenColors[id])
-                                .opacity(showBlur ? 0: 1)
+                        ForEach(0..<7) { id in
+                            ScreenView(focusedField: $focusedField, text: $texts[id], pageID: $pageID, infoisOn: $infoisOn, thisPageID: id, strokeColor: strokeColors[id], screenColor: screenColors[id], darkscreenColor: darkscreenColors[id])
+                                .opacity(showBlur ? 0 : 1)
                                 .overlay {
                                     Image("LaunchImage")
-                                        .opacity(showBlur ? 1: 0)
+                                        .opacity(showBlur ? 1 : 0)
                                     GeometryReader { geometry in
                                         Circle()
                                             .frame(width: 100)
@@ -92,12 +91,11 @@ struct ContentView: View {
                         lastSyncDate = Date()
                         saveSyncDate()
                     }
-                    .onChange(of: pageID, { oldValue, newValue in
-                        //focusedField = pageID
-                    })
+                    .onChange(of: pageID) { oldValue, newValue in
+                        // focusedField = pageID
+                    }
                     .sensoryFeedback(.increase, trigger: pageID)
                     .sensoryFeedback(.increase, trigger: infoisOn)
-                    .sensoryFeedback(.increase, trigger: settingisOn)
                 }
             }
         }
@@ -107,34 +105,54 @@ struct ContentView: View {
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
             showBlur = false
         }
-        .fullScreenCover(isPresented: $settingisOn, content: {
-            SettingView(settingisOn: $settingisOn)
-        })
     }
     
     func saveTexts() {
-        let store = NSUbiquitousKeyValueStore.default
-        for (index, text) in texts.enumerated() {
-            store.set(text, forKey: "Text\(index)")
+        if iCloudSync {
+            let store = NSUbiquitousKeyValueStore.default
+            for (index, text) in texts.enumerated() {
+                store.set(text, forKey: "Text\(index)")
+            }
+            store.synchronize()
+        } else {
+            let store = UserDefaults.standard
+            for (index, text) in texts.enumerated() {
+                store.set(text, forKey: "Text\(index)")
+            }
+            store.synchronize()
         }
-        store.synchronize()
     }
     
     func loadTexts() {
-        let store = NSUbiquitousKeyValueStore.default
-        for index in 0..<texts.count {
-            texts[index] = store.string(forKey: "Text\(index)") ?? ""
+        if iCloudSync {
+            let store = NSUbiquitousKeyValueStore.default
+            for index in 0..<texts.count {
+                texts[index] = store.string(forKey: "Text\(index)") ?? ""
+            }
+            lastSyncDate = store.object(forKey: "LastSyncDate") as? Date
+        } else {
+            let store = UserDefaults.standard
+            for index in 0..<texts.count {
+                texts[index] = store.string(forKey: "Text\(index)") ?? ""
+            }
+            lastSyncDate = store.object(forKey: "LastSyncDate") as? Date
         }
-        lastSyncDate = store.object(forKey: "LastSyncDate") as? Date
     }
     
     func saveSyncDate() {
-        let store = NSUbiquitousKeyValueStore.default
-        store.set(Date(), forKey: "LastSyncDate")
-        store.synchronize()
+        if iCloudSync {
+            let store = NSUbiquitousKeyValueStore.default
+            store.set(Date(), forKey: "LastSyncDate")
+            store.synchronize()
+        } else {
+            let store = UserDefaults.standard
+            store.set(Date(), forKey: "LastSyncDate")
+            store.synchronize()
+        }
     }
     
     func startObservingiCloudChanges() {
+        guard iCloudSync else { return }
         NotificationCenter.default.addObserver(forName: NSUbiquitousKeyValueStore.didChangeExternallyNotification, object: NSUbiquitousKeyValueStore.default, queue: .main) { _ in
             self.loadTexts()
         }
