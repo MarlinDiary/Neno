@@ -350,6 +350,19 @@ struct ScreenView: View {
                         }
                     }
                     .buttonStyle(PlainButtonStyle())
+                    Spacer()
+                    Button(action: {
+                        copySensorTrigger.toggle()
+                        if let url = URL(string: "https://noufou.com") {
+                            UIApplication.shared.open(url)
+                        }
+                    }) {
+                        HStack {
+                            Image(systemName: "safari")
+                            Text("Website")
+                        }
+                    }
+                    .buttonStyle(PlainButtonStyle())
                 }
                 
                 Spacer()
@@ -382,6 +395,7 @@ struct ScreenView: View {
                         }
                     }
                     .buttonStyle(PlainButtonStyle())
+                    /*
                     Spacer()
                     Button(action: {
                         copySensorTrigger.toggle()
@@ -394,6 +408,7 @@ struct ScreenView: View {
                         }
                     }
                     .buttonStyle(PlainButtonStyle())
+                     */
                 }
             }
             .foregroundStyle(Color(hex: strokeColor))

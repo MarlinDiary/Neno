@@ -10,6 +10,7 @@ import SwiftUI
 struct TextViewWrapper: UIViewRepresentable {
     @Binding var text: String
     @AppStorage("fontSize") private var fontSize = "Medium"
+    @AppStorage("paragraphSpacing") private var paragraphSpacing = "Small" // Small, Medium, Large
 
     class Coordinator: NSObject, UITextViewDelegate {
         var parent: TextViewWrapper
@@ -87,16 +88,19 @@ struct TextViewWrapper: UIViewRepresentable {
         textView.showsVerticalScrollIndicator = false
         textView.backgroundColor = .clear
         textView.font = getFontSize() // Set initial font size
+        textView.attributedText = getAttributedText(text: text, fontSize: getFontSize()) // Set initial attributed text
         return textView
     }
 
     func updateUIView(_ uiView: UITextView, context: Context) {
         if uiView.text != text {
-            uiView.text = text
+            uiView.attributedText = getAttributedText(text: text, fontSize: getFontSize())
         }
         
         // Update font size if needed
         uiView.font = getFontSize()
+        // Always update attributedText to ensure paragraph spacing is applied
+        uiView.attributedText = getAttributedText(text: text, fontSize: getFontSize())
     }
     
     private func getFontSize() -> UIFont {
@@ -108,5 +112,28 @@ struct TextViewWrapper: UIViewRepresentable {
         default:
             return UIFont.systemFont(ofSize: 17)
         }
+    }
+
+    private func getParagraphSpacing() -> CGFloat {
+        switch paragraphSpacing {
+        case "Medium":
+            return 8.0
+        case "Large":
+            return 16.0
+        default:
+            return 0.0
+        }
+    }
+
+    private func getAttributedText(text: String, fontSize: UIFont) -> NSAttributedString {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.paragraphSpacing = getParagraphSpacing()
+
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: fontSize,
+            .paragraphStyle: paragraphStyle
+        ]
+
+        return NSAttributedString(string: text, attributes: attributes)
     }
 }

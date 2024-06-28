@@ -12,9 +12,9 @@ struct SettingView: View {
     @AppStorage("colorSchemeMode") private var colorSchemeMode = "System" // System, Dark, Light
     @AppStorage("appIcon") private var appIcon = "Gray"
     @AppStorage("iCloudSync") private var iCloudSync = true
-    @AppStorage("hapticFeedback") private var hapticFeedback = true
     @AppStorage("confirmDelete") private var confirmDelete = false
     @AppStorage("fontSize") private var fontSize = "Medium"
+    @AppStorage("paragraphSpacing") private var paragraphSpacing = "Small"
     @State private var sensorTrigger = false
     
     @Binding var infoisOn: Bool
@@ -94,17 +94,6 @@ struct SettingView: View {
                     Spacer()
                     Button(action: {
                         sensorTrigger.toggle()
-                        hapticFeedback.toggle()
-                    }) {
-                        HStack {
-                            Image(systemName: "water.waves")
-                            Text("Haptic Feedback: \(hapticFeedback ? "Open" : "Closed")")
-                        }
-                    }
-                    .buttonStyle(PlainButtonStyle())
-                    Spacer()
-                    Button(action: {
-                        sensorTrigger.toggle()
                         confirmDelete.toggle()
                     }) {
                         HStack {
@@ -142,6 +131,24 @@ struct SettingView: View {
                         HStack {
                             Image(systemName: "textformat.alt")
                             Text("Font Size: \(fontSize)")
+                        }
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    Spacer()
+                    Button(action: {
+                        sensorTrigger.toggle()
+                        switch paragraphSpacing {
+                                                case "Small":
+                                                    paragraphSpacing = "Medium"
+                                                case "Medium":
+                                                    paragraphSpacing = "Large"
+                                                default:
+                                                    paragraphSpacing = "Small"
+                                                }
+                    }) {
+                        HStack {
+                            Image(systemName: "text.alignleft")
+                                                        Text("Paragraph Spacing: \(paragraphSpacing)")
                         }
                     }
                     .buttonStyle(PlainButtonStyle())
