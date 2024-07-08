@@ -10,7 +10,7 @@ import SwiftUI
 struct TextViewWrapper: UIViewRepresentable {
     @Binding var text: String
     @AppStorage("fontSize") private var fontSize = "Medium"
-    @AppStorage("paragraphSpacing") private var paragraphSpacing = "Small" // Small, Medium, Large
+    @AppStorage("font") private var font = "Arial"
 
     class Coordinator: NSObject, UITextViewDelegate {
         var parent: TextViewWrapper
@@ -87,53 +87,37 @@ struct TextViewWrapper: UIViewRepresentable {
         textView.allowsEditingTextAttributes = false
         textView.showsVerticalScrollIndicator = false
         textView.backgroundColor = .clear
-        textView.font = getFontSize() // Set initial font size
-        textView.attributedText = getAttributedText(text: text, fontSize: getFontSize()) // Set initial attributed text
+        textView.font = getFont() // Set initial font
         return textView
     }
 
     func updateUIView(_ uiView: UITextView, context: Context) {
         if uiView.text != text {
-            uiView.attributedText = getAttributedText(text: text, fontSize: getFontSize())
+            uiView.text = text
         }
         
-        // Update font size if needed
-        uiView.font = getFontSize()
-        // Always update attributedText to ensure paragraph spacing is applied
-        uiView.attributedText = getAttributedText(text: text, fontSize: getFontSize())
+        // Update font if needed
+        uiView.font = getFont()
     }
     
-    private func getFontSize() -> UIFont {
+    private func getFont() -> UIFont {
+        let size: CGFloat
         switch fontSize {
         case "Small":
-            return UIFont.systemFont(ofSize: 14)
+            size = 14
         case "Large":
-            return UIFont.systemFont(ofSize: 23)
+            size = 23
         default:
-            return UIFont.systemFont(ofSize: 17)
+            size = 17
         }
-    }
-
-    private func getParagraphSpacing() -> CGFloat {
-        switch paragraphSpacing {
-        case "Medium":
-            return 8.0
-        case "Large":
-            return 16.0
+        
+        switch font {
+        case "Helvetica":
+            return UIFont(name: "Helvetica", size: size) ?? UIFont.systemFont(ofSize: size)
+        case "Courier":
+            return UIFont(name: "Courier", size: size) ?? UIFont.systemFont(ofSize: size)
         default:
-            return 0.0
+            return UIFont(name: "Arial", size: size) ?? UIFont.systemFont(ofSize: size)
         }
-    }
-
-    private func getAttributedText(text: String, fontSize: UIFont) -> NSAttributedString {
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.paragraphSpacing = getParagraphSpacing()
-
-        let attributes: [NSAttributedString.Key: Any] = [
-            .font: fontSize,
-            .paragraphStyle: paragraphStyle
-        ]
-
-        return NSAttributedString(string: text, attributes: attributes)
     }
 }

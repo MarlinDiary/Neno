@@ -14,7 +14,7 @@ struct SettingView: View {
     @AppStorage("iCloudSync") private var iCloudSync = true
     @AppStorage("confirmDelete") private var confirmDelete = false
     @AppStorage("fontSize") private var fontSize = "Medium"
-    @AppStorage("paragraphSpacing") private var paragraphSpacing = "Small"
+    @AppStorage("font") private var font = "Arial"
     @State private var sensorTrigger = false
     
     @Binding var infoisOn: Bool
@@ -136,25 +136,25 @@ struct SettingView: View {
                     .buttonStyle(PlainButtonStyle())
                     Spacer()
                     Button(action: {
-                        sensorTrigger.toggle()
-                        switch paragraphSpacing {
-                                                case "Small":
-                                                    paragraphSpacing = "Medium"
-                                                case "Medium":
-                                                    paragraphSpacing = "Large"
-                                                default:
-                                                    paragraphSpacing = "Small"
-                                                }
-                    }) {
-                        HStack {
-                            Image(systemName: "text.alignleft")
-                                                        Text("Paragraph Spacing: \(paragraphSpacing)")
-                        }
-                    }
-                    .buttonStyle(PlainButtonStyle())
+                                            sensorTrigger.toggle()
+                                            switch font {
+                                            case "Arial":
+                                                font = "Helvetica"
+                                            case "Helvetica":
+                                                font = "Courier"
+                                            default:
+                                                font = "Arial"
+                                            }
+                                        }) {
+                                            HStack {
+                                                Image(systemName: "textformat")
+                                                Text("Font: \(font)")
+                                            }
+                                        }
+                                        .buttonStyle(PlainButtonStyle())
                 }
             }
-            .foregroundStyle(Color(hex: strokeColor))
+            .foregroundStyle(.primary.opacity(0.8))
             .padding()
             .sensoryFeedback(.warning, trigger: deleteSensorTrigger)
             .sensoryFeedback(.success, trigger: copySensorTrigger)

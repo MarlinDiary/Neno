@@ -257,14 +257,14 @@ struct ScreenView: View {
                             Image(systemName: "trash")
                             Text("Clear Content")
                         }
-                        .foregroundStyle(.red.opacity(0.6))
+                        .foregroundStyle(.red.opacity(0.8))
                     }
                     .buttonStyle(PlainButtonStyle())
                 }
                 //.disabled(text.trimmingCharacters(in: .whitespacesAndNewlines)=="")
                 //.font(.title3)
             }
-            .foregroundStyle(Color(hex: strokeColor))
+            .foregroundStyle(.primary.opacity(0.8))
             .padding()
             .sensoryFeedback(.warning, trigger: deleteSensorTrigger)
             .sensoryFeedback(.success, trigger: copySensorTrigger)
@@ -411,7 +411,7 @@ struct ScreenView: View {
                      */
                 }
             }
-            .foregroundStyle(Color(hex: strokeColor))
+            .foregroundStyle(.primary.opacity(0.8))
             .padding()
             .sensoryFeedback(.warning, trigger: deleteSensorTrigger)
             .sensoryFeedback(.success, trigger: copySensorTrigger)
